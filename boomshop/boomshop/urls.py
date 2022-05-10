@@ -15,13 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from authapp.urls import router as auth_router
+from users.urls import router as auth_router
 from rest_framework import routers
+from knox.views import LogoutView, LogoutAllView
 
 router  = routers.DefaultRouter()
 router.registry.extend(auth_router.registry)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include(router.urls)),
+    path('auth/', include('users.urls')),
+    path('logout/', LogoutView.as_view()),
+    path('logoutall/', LogoutAllView.as_view()),
 ]
